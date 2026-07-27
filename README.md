@@ -68,19 +68,37 @@ install.ps1          aplica settings + statusline nesta máquina
 
 Os agentes esperam encontrar `docs/regras/*.md` na raiz do projeto atual.
 
-## Atualizar
+## Máquina autora vs. máquinas consumidoras
 
-Editei um agente na máquina A:
+**Autora** (onde eu edito os agentes): `~/.claude/agents` e `~/.claude/commands` são
+*junctions* para as pastas deste repo. Editar em `~/.claude/agents/` é editar o arquivo
+versionado — não existe passo de cópia. Nessa máquina o plugin **não** fica instalado,
+senão os agentes apareceriam duplicados.
+
+Para montar as junctions numa máquina (não precisa de admin):
 
 ```powershell
-copy $HOME\.claude\agents\*.md .\plugins\vision-kit\agents\
+$claude = "$HOME\.claude"; $kit = "$HOME\Downloads\claude-kit\plugins\vision-kit"
+foreach ($n in 'agents','commands') {
+    Rename-Item "$claude\$n" "$n.bak-$(Get-Date -Format yyyyMMdd)"
+    cmd /c mklink /J "$claude\$n" "$kit\$n"
+}
+```
+
+**Consumidoras**: instalam o plugin normalmente (seção acima) e não têm junction.
+
+## Atualizar
+
+Na máquina autora, depois de editar um agente:
+
+```powershell
 git add -A; git commit -m "atualiza agentes"; git push
 ```
 
-Na máquina B, dentro do Claude Code: `/plugin update vision-kit@enzo-claude-kit`
-
 Bump o `version` em `plugins/vision-kit/.claude-plugin/plugin.json` a cada mudança
 relevante — é o que o Claude Code usa para detectar atualização.
+
+Nas consumidoras, dentro do Claude Code: `/plugin update vision-kit@enzo-claude-kit`
 
 ## Fora do kit, de propósito
 
