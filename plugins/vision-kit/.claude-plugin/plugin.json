@@ -1,0 +1,17 @@
+{
+  "name": "vision-kit",
+  "description": "Agentes especialistas e comandos de fluxo (ideacao, pesquisa, prototipagem, refatoracao) em pt-BR",
+  "version": "1.0.0",
+  "author": {
+    "name": "Enzo Pacheco",
+    "email": "it@visionbrazil.com"
+  },
+  "keywords": [
+    "agents",
+    "workflows",
+    "pt-br",
+    "refactor",
+    "research",
+    "design"
+  ]
+}

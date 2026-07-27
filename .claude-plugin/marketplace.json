@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "enzo-claude-kit",
+  "description": "Marketplace pessoal com os agentes e comandos que uso no dia a dia",
+  "owner": {
+    "name": "Enzo Pacheco",
+    "email": "it@visionbrazil.com"
+  },
+  "plugins": [
+    {
+      "name": "vision-kit",
+      "description": "Agentes especialistas (backend, frontend, database, design, pesquisa, migracao) e comandos /ideias, /investigar, /prototipar, /refatorar",
+      "source": "./plugins/vision-kit",
+      "category": "development"
+    }
+  ]
+}
