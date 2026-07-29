@@ -5,6 +5,20 @@
     "command": "node C:/Users/Epacheco/.claude/statusline.js",
     "padding": 0
   },
+  "extraKnownMarketplaces": {
+    "enzo-claude-kit": {
+      "source": {
+        "source": "github",
+        "repo": "Enzopachecopereira-VB/claude-kit"
+      }
+    },
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
+      }
+    }
+  },
   "enabledPlugins": {
     "superpowers@claude-plugins-official": true
   },

@@ -18,16 +18,7 @@ O repo é privado e o Claude Code usa o `git`/`gh` da máquina:
 gh auth login
 ```
 
-### 2. Agentes e comandos — dentro do Claude Code
-
-```
-/plugin marketplace add Enzopachecopereira-VB/claude-kit
-/plugin install vision-kit@enzo-claude-kit
-```
-
-Traz os 13 agentes e os 4 comandos.
-
-### 3. Skills, settings e statusline — no terminal
+### 2. Skills, settings e statusline — no terminal
 
 ```powershell
 git clone https://github.com/Enzopachecopereira-VB/claude-kit.git
@@ -36,14 +27,21 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1          # settings + sta
 powershell -ExecutionPolicy Bypass -File .\install-skills.ps1   # as 37 skills
 ```
 
+### 3. Agentes e comandos — dentro do Claude Code
+
+```
+/plugin install vision-kit@enzo-claude-kit
+/plugin install superpowers@claude-plugins-official
+```
+
+Não precisa de `/plugin marketplace add`: o `settings.json` do passo 2 já
+registra os dois marketplaces. Por isso o passo 3 vem **depois** do 2.
+
 O `-ExecutionPolicy Bypass` não é frescura: no Windows padrão, chamar `./install.ps1`
 direto falha com *"a execução de scripts foi desabilitada neste sistema"*. O
 `Bypass` vale só para aquela chamada — não altera a política da máquina.
 
 Os dois scripts fazem backup do que já existir antes de sobrescrever.
-
-Falta só o plugin `superpowers`, que vem do marketplace oficial — o comando está
-em `setup/skills-externas.md`.
 
 ## O que tem aqui
 
@@ -134,5 +132,14 @@ Nas consumidoras, dentro do Claude Code: `/plugin update vision-kit@enzo-claude-
 
 ## Fora do kit, de propósito
 
-- **Memórias de projeto** (`~/.claude/projects/*/memory/`) — contexto interno, fica local.
-- **MCP servers** — têm credenciais; reconfigure por máquina.
+Depois dos 3 passos acima, **só sobra isto** para fazer à mão:
+
+- **MCP servers locais** (4: supabase, firecrawl, pika-mcp, playwright) — têm
+  credenciais, não dá para versionar. Reconfigure com `claude mcp add` ou `/mcp`.
+  Os da conta claude.ai (Figma, higgsfield) vêm sozinhos ao logar.
+  Detalhes em `setup/skills-externas.md`.
+- **Memórias de projeto** (`~/.claude/projects/*/memory/`) — contexto interno de
+  cada projeto, fica local de propósito.
+
+Todo o resto — agentes, comandos, skills, settings, statusline, marketplaces —
+está coberto.

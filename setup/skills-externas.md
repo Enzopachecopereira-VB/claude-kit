@@ -91,6 +91,27 @@ Verificado em 29/07/2026 com `npx skills list` (CLI v1.5.20).
 
 ## MCP servers
 
-MCPs ficam fora deste kit (têm credenciais). Os que uso hoje:
-Figma, Firecrawl, Pika, Playwright, Supabase.
-Reconfigure com `claude mcp add` ou pela UI, e reautentique em cada máquina.
+MCPs ficam fora deste kit — têm credenciais e não podem ser versionados. São o
+**único** passo manual que sobra numa máquina nova.
+
+Eles se dividem em dois tipos, e só um dá trabalho:
+
+### Locais — precisam ser reconfigurados (4)
+
+Vivem em `~/.claude.json`, na chave `mcpServers`:
+
+| Server | Reautenticar |
+|---|---|
+| `supabase` | token de acesso |
+| `firecrawl` | API key |
+| `pika-mcp` | conta Pika |
+| `playwright` | nenhum — só instalar |
+
+Reconfigure com `claude mcp add` ou pela UI (`/mcp`).
+
+### Da conta claude.ai — vêm sozinhos
+
+`Figma` e `higgsfield` estão conectados à sua conta claude.ai, não ao computador.
+Aparecem sozinhos ao logar na máquina nova — não faça nada.
+
+Verificado em 29/07/2026.
