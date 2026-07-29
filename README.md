@@ -1,30 +1,49 @@
 # claude-kit
 
-Meus agentes e comandos do Claude Code, versionados para não ficarem presos a uma máquina.
+Meu ambiente do Claude Code — agentes, comandos, skills e settings — versionado
+para não ficar preso a uma máquina.
 
-O repositório é ao mesmo tempo um **marketplace** e o **plugin** `vision-kit`.
+O repositório é ao mesmo tempo um **marketplace**, o **plugin** `vision-kit` e um
+**espelho das 37 skills** que uso.
 
 ## Instalar numa máquina nova
 
-Dentro do Claude Code:
+São três passos, nesta ordem.
+
+### 1. Autenticar
+
+O repo é privado e o Claude Code usa o `git`/`gh` da máquina:
+
+```bash
+gh auth login
+```
+
+### 2. Agentes e comandos — dentro do Claude Code
 
 ```
 /plugin marketplace add Enzopachecopereira-VB/claude-kit
 /plugin install vision-kit@enzo-claude-kit
 ```
 
-Repositório privado: o Claude Code usa o `git`/`gh` da máquina, então basta estar
-autenticado (`gh auth login`) antes do primeiro comando.
+Traz os 13 agentes e os 4 comandos.
 
-Depois, no terminal, para `settings.json` + statusline:
+### 3. Skills, settings e statusline — no terminal
 
 ```powershell
 git clone https://github.com/Enzopachecopereira-VB/claude-kit.git
 cd claude-kit
-./install.ps1
+powershell -ExecutionPolicy Bypass -File .\install.ps1          # settings + statusline
+powershell -ExecutionPolicy Bypass -File .\install-skills.ps1   # as 37 skills
 ```
 
-E siga `setup/skills-externas.md` para as skills de terceiros.
+O `-ExecutionPolicy Bypass` não é frescura: no Windows padrão, chamar `./install.ps1`
+direto falha com *"a execução de scripts foi desabilitada neste sistema"*. O
+`Bypass` vale só para aquela chamada — não altera a política da máquina.
+
+Os dois scripts fazem backup do que já existir antes de sobrescrever.
+
+Falta só o plugin `superpowers`, que vem do marketplace oficial — o comando está
+em `setup/skills-externas.md`.
 
 ## O que tem aqui
 
@@ -32,11 +51,14 @@ E siga `setup/skills-externas.md` para as skills de terceiros.
 plugins/vision-kit/
   agents/     13 agentes especialistas
   commands/    4 slash commands
+skills/       37 skills de terceiros (Pika, caveman, Vercel) — espelho
 setup/
   settings.json      modelo, tema, effort level
   statusline.js      statusline customizada
-  skills-externas.md como reinstalar Pika, Vercel, caveman, superpowers
+  skills-lock.json   origem e hash das skills rastreadas pelo CLI
+  skills-externas.md os dois caminhos para restaurar as skills
 install.ps1          aplica settings + statusline nesta máquina
+install-skills.ps1   restaura as 37 skills nesta máquina
 ```
 
 ### Agentes
@@ -67,6 +89,16 @@ install.ps1          aplica settings + statusline nesta máquina
 | `/refatorar` | explorar → planejar → migrar em fatias → verificar |
 
 Os agentes esperam encontrar `docs/regras/*.md` na raiz do projeto atual.
+
+### Skills
+
+37 skills de terceiros espelhadas em `skills/` — 20 do Pika, 7 do caveman, 9 da
+Vercel e a `find-skills`. Restaura com `./install-skills.ps1`.
+
+O espelho existe porque o `skills-lock.json` só rastreia 27 delas: as 9 da Vercel
+e a `find-skills` aparecem como `Source: local` no CLI, então **nada as
+reinstalaria** numa máquina nova. Detalhes e o caminho alternativo (reinstalar da
+fonte, para pegar versões mais novas) em `setup/skills-externas.md`.
 
 ## Máquina autora vs. máquinas consumidoras
 
