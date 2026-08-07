@@ -60,14 +60,54 @@ Os dois convivem — rodar o B por cima do A simplesmente atualiza.
 
 ---
 
-## Plugin oficial (dentro do Claude Code)
+## Plugins (dentro do Claude Code)
 
-Este não passa pelo CLI `skills` — é plugin, instala por marketplace:
+Estes não passam pelo CLI `skills` — são plugins, instalam por marketplace. O
+`setup/settings.json` já traz os três marketplaces e os 8 plugins habilitados,
+então restaurar o settings resolve. Para instalar na mão:
 
 ```
 /plugin marketplace add anthropics/claude-plugins-official
 /plugin install superpowers@claude-plugins-official
+
+/plugin marketplace add trailofbits/skills
+/plugin install static-analysis@trailofbits        # + insecure-defaults, fp-check,
+                                                   # supply-chain-risk-auditor,
+                                                   # testing-handbook-skills,
+                                                   # differential-review
+
+/plugin marketplace add pbakaus/impeccable
+/plugin install impeccable@impeccable
 ```
+
+Fora do Claude Code também existe o CLI: `claude plugin marketplace add <repo>` e
+`claude plugin install <plugin>@<marketplace>` fazem o mesmo sem abrir o menu.
+
+### impeccable (07/08/2026)
+
+`pbakaus/impeccable` (Apache-2.0). Plugin **4.0.4**: 1 skill, 23 comandos, 4
+agentes, 2 hooks, ~527 tokens sempre ativos. O CLI no npm é versionado à parte
+(`impeccable` 3.5.0).
+
+**Não espelhe os arquivos desta skill em `skills/`.** O plugin já entrega tudo no
+Claude Code; se o espelho existisse, o `install-skills.ps1` criaria uma junction em
+`~/.claude/skills/impeccable` e você teria a skill duas vezes. O marketplace no
+`settings.json` é o registro correto.
+
+O `npx impeccable install` foi rodado **só para Cursor e Codex**, que o plugin não
+alcança:
+
+```
+npx impeccable install --global --providers cursor,codex -y
+```
+
+Isso escreve `~/.cursor/skills/impeccable`, `~/.agents/skills/impeccable` e hooks em
+`.cursor/hooks.json` + `.codex/hooks.json`. **Não** cria
+`~/.claude/skills/impeccable` nem `~/.claude/settings.local.json`, que é o ponto.
+
+Cuidado com o escopo: rodar `npx impeccable install` sem `--providers` a partir de
+`~` instala em escopo global e inclui o `.claude`, duplicando a skill e registrando
+o hook de edição no seu settings.
 
 ---
 
