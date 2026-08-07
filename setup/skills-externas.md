@@ -44,6 +44,11 @@ npx skills add vercel/agent-skills
 
 # claude-video — não passa pelo CLI `skills`, tem installer próprio no npm
 npx claude-video-install
+
+# notebooklm-research — pacote PyPI, o install.sh do repo é Unix-only
+uv tool install notebooklm-skill
+uvx --from notebooklm-skill playwright install chromium
+notebooklm-install-skill --target "$HOME/.agents/skills/notebooklm-research"
 ```
 
 **Use este quando:** quiser as versões mais recentes, ou depois de restaurar pelo
@@ -68,7 +73,7 @@ Este não passa pelo CLI `skills` — é plugin, instala por marketplace:
 
 ## Estado do espelho (07/08/2026)
 
-38 skills.
+39 skills.
 
 | Fonte | Qtd | Skills |
 |---|---|---|
@@ -77,6 +82,7 @@ Este não passa pelo CLI `skills` — é plugin, instala por marketplace:
 | `vercel/agent-skills` | 9 | deploy-to-vercel, vercel-cli-with-tokens, vercel-composition-patterns, vercel-optimize, vercel-react-best-practices, vercel-react-native-skills, vercel-react-view-transitions, web-design-guidelines, writing-guidelines |
 | CLI `skills` | 1 | find-skills |
 | npm `claude-video-install` | 1 | claude-video |
+| PyPI `notebooklm-skill` | 1 | notebooklm-research |
 | `anthropics/claude-plugins-official` | 1 plugin | superpowers v6.1.1 |
 
 ### claude-video (07/08/2026)
@@ -98,14 +104,42 @@ Duas coisas ficaram **fora** do espelho de propósito:
 O bloco de voz do `SKILL.md` original mandava seguir as regras de marca do autor
 (*"Marques' brand rules"*); foi trocado por pt-BR seguindo o CLAUDE.md daqui.
 
+### notebooklm-research (07/08/2026)
+
+Origem: `claude-world/notebooklm-skill` (MIT), publicada no PyPI como
+`notebooklm-skill` **1.3.0** — o HEAD do repo (`dc38bd8`) é essa mesma versão.
+Fora do `skills-lock.json`, como as outras não-CLI.
+
+**O `install.sh` do repo não roda no Windows**: assume `venv/bin/python` e `ln -s`.
+Use o `uv` (Caminho B acima), que já resolve isso.
+
+Só o `SKILL.md` está espelhado. O resto **não é versionável**:
+
+- **`~/.notebooklm/profiles/<perfil>/storage_state.json`** — sessão do navegador,
+  equivalente a cookie da conta Google. Nunca ler, copiar nem commitar. Recriar
+  com `notebooklm-auth setup` (abre um Chromium e pede login).
+- **CLI + venv** — gerenciados pelo `uv` em `%APPDATA%\uv\tools\notebooklm-skill`,
+  com 5 comandos linkados em `~/.local/bin` (já está no PATH do usuário).
+- **Chromium do Playwright** — ~115MB em `%LOCALAPPDATA%\ms-playwright`. É separado
+  do MCP `playwright` do Node, que continua independente.
+
+MCP registrado em escopo user: `uvx --from notebooklm-skill notebooklm-mcp`,
+13 tools `nlm_*`. Como é `uvx`, numa máquina nova basta ter `uv` — não precisa
+pré-instalar nada além da autenticação.
+
+**Ressalva de estabilidade:** o NotebookLM não tem API pública. Isso aqui é a API
+web não-oficial dirigida por navegador. Se o Google mexer no front, quebra, e não
+há SLA nenhum.
+
 ### Por que o espelho existe
 
-O `skills-lock.json` rastreia só **27** das 38 — as do Pika e do caveman. As 9 da
-Vercel, a `find-skills` e a `claude-video` aparecem como `Source: local` no
-`npx skills list`, ou seja, **nada as reinstala automaticamente**. Numa máquina
-nova, o Caminho B sozinho traria 27 e deixaria 11 para trás, em silêncio.
+O `skills-lock.json` rastreia só **27** das 39 — as do Pika e do caveman. As 9 da
+Vercel, a `find-skills`, a `claude-video` e a `notebooklm-research` aparecem como
+`Source: local` no `npx skills list`, ou seja, **nada as reinstala
+automaticamente**. Numa máquina nova, o Caminho B sozinho traria 27 e deixaria 12
+para trás, em silêncio.
 
-O espelho inclui todas as 38, e não só as 11 órfãs, para que o repo seja a
+O espelho inclui todas as 39, e não só as 12 órfãs, para que o repo seja a
 resposta única — em vez de uma lista de exceções que alguém precisa lembrar.
 
 Verificado em 29/07/2026 com `npx skills list` (CLI v1.5.20).
@@ -119,7 +153,7 @@ MCPs ficam fora deste kit — têm credenciais e não podem ser versionados. Sã
 
 Eles se dividem em dois tipos, e só um dá trabalho:
 
-### Locais — precisam ser reconfigurados (4)
+### Locais — precisam ser reconfigurados (5)
 
 Vivem em `~/.claude.json`, na chave `mcpServers`:
 
@@ -129,6 +163,7 @@ Vivem em `~/.claude.json`, na chave `mcpServers`:
 | `firecrawl` | API key |
 | `pika-mcp` | conta Pika |
 | `playwright` | nenhum — só instalar |
+| `notebooklm` | login Google via `notebooklm-auth setup` |
 
 Reconfigure com `claude mcp add` ou pela UI (`/mcp`).
 
