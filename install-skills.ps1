@@ -96,3 +96,4 @@ Write-Host 'Para atualizar as de terceiros a partir da fonte, em vez do espelho:
 Write-Host '  npx skills add Pika-Labs/Pika-Plugins'
 Write-Host '  npx skills add JuliusBrussee/caveman'
 Write-Host '  npx skills add vercel/agent-skills'
+Write-Host '  npx skills add mattpocock/skills   (veja as flags em setup/skills-externas.md)'

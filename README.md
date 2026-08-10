@@ -4,7 +4,7 @@ Meu ambiente do Claude Code — agentes, comandos, skills e settings — version
 para não ficar preso a uma máquina.
 
 O repositório é ao mesmo tempo um **marketplace**, o **plugin** `vision-kit` e um
-**espelho das 37 skills** que uso.
+**espelho das 48 skills** que uso.
 
 ## Instalar numa máquina nova
 
@@ -24,7 +24,7 @@ gh auth login
 git clone https://github.com/Enzopachecopereira-VB/claude-kit.git
 cd claude-kit
 powershell -ExecutionPolicy Bypass -File .\install.ps1          # settings + statusline
-powershell -ExecutionPolicy Bypass -File .\install-skills.ps1   # as 37 skills
+powershell -ExecutionPolicy Bypass -File .\install-skills.ps1   # as 48 skills
 ```
 
 ### 3. Agentes e comandos — dentro do Claude Code
@@ -49,14 +49,14 @@ Os dois scripts fazem backup do que já existir antes de sobrescrever.
 plugins/vision-kit/
   agents/     13 agentes especialistas
   commands/    4 slash commands
-skills/       37 skills de terceiros (Pika, caveman, Vercel) — espelho
+skills/       48 skills de terceiros (Pika, caveman, Vercel, Matt Pocock) — espelho
 setup/
   settings.json      modelo, tema, effort level
   statusline.js      statusline customizada
   skills-lock.json   origem e hash das skills rastreadas pelo CLI
   skills-externas.md os dois caminhos para restaurar as skills
 install.ps1          aplica settings + statusline nesta máquina
-install-skills.ps1   restaura as 37 skills nesta máquina
+install-skills.ps1   restaura as 48 skills nesta máquina
 ```
 
 ### Agentes
@@ -90,13 +90,20 @@ Os agentes esperam encontrar `docs/regras/*.md` na raiz do projeto atual.
 
 ### Skills
 
-37 skills de terceiros espelhadas em `skills/` — 20 do Pika, 7 do caveman, 9 da
-Vercel e a `find-skills`. Restaura com `./install-skills.ps1`.
+48 skills de terceiros espelhadas em `skills/` — 20 do Pika, 7 do caveman, 9 da
+Vercel, 9 do Matt Pocock, a `find-skills`, a `claude-video` e a
+`notebooklm-research`. Restaura com `./install-skills.ps1`.
 
-O espelho existe porque o `skills-lock.json` só rastreia 27 delas: as 9 da Vercel
-e a `find-skills` aparecem como `Source: local` no CLI, então **nada as
-reinstalaria** numa máquina nova. Detalhes e o caminho alternativo (reinstalar da
-fonte, para pegar versões mais novas) em `setup/skills-externas.md`.
+O espelho existe porque o `skills-lock.json` só rastreia 27 delas: as 9 da Vercel,
+as 9 do Matt Pocock, a `find-skills`, a `claude-video` e a `notebooklm-research`
+aparecem como `Source: local` no CLI, então **nada as reinstalaria** numa máquina
+nova. Detalhes e o caminho alternativo (reinstalar da fonte, para pegar versões
+mais novas) em `setup/skills-externas.md`.
+
+As do Matt Pocock (MIT) são de engenharia, não de mídia: `grill-me` /
+`grill-with-docs` (entrevista antes de construir), `tdd`, `diagnosing-bugs` e
+`code-review`. Rode `/setup-matt-pocock-skills` uma vez por repositório antes de
+usá-las.
 
 ## Máquina autora vs. máquinas consumidoras
 

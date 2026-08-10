@@ -9,7 +9,7 @@ diferença é se você quer a versão congelada ou a mais recente.
 
 ## Caminho A — espelho deste repo (recomendado)
 
-As 37 skills estão versionadas em `skills/` na raiz do repo. Restaurar:
+As 48 skills estão versionadas em `skills/` na raiz do repo. Restaurar:
 
 ```powershell
 git clone https://github.com/Enzopachecopereira-VB/claude-kit.git
@@ -41,6 +41,11 @@ npx skills add JuliusBrussee/caveman
 
 # Vercel — performance, deploy, design e writing guidelines
 npx skills add vercel/agent-skills
+
+# Matt Pocock — 9 skills de engenharia (grilling, tdd, code-review...)
+npx skills add mattpocock/skills -g -a claude-code -y \
+  -s grill-me -s grilling -s grill-with-docs -s tdd -s diagnosing-bugs \
+  -s code-review -s domain-modeling -s codebase-design -s setup-matt-pocock-skills
 
 # claude-video — não passa pelo CLI `skills`, tem installer próprio no npm
 npx claude-video-install
@@ -111,12 +116,13 @@ o hook de edição no seu settings.
 
 ---
 
-## Estado do espelho (07/08/2026)
+## Estado do espelho (10/08/2026)
 
-39 skills.
+48 skills.
 
 | Fonte | Qtd | Skills |
 |---|---|---|
+| `mattpocock/skills` | 9 | code-review, codebase-design, diagnosing-bugs, domain-modeling, grill-me, grill-with-docs, grilling, setup-matt-pocock-skills, tdd |
 | `Pika-Labs/Pika-Plugins` | 20 | 4k-vfx, anime-soccer, app-sizzle, app-store-screens, baseball-trend, build-a-brand, content-director, explainer, fix-my-look, founder-product-video, gameday, kiss-cam, language-swap, persona-builder, podcast, stagefight, ugc-ads, vfx, viral-hook, voxel-it |
 | `JuliusBrussee/caveman` | 7 | cavecrew, caveman, caveman-commit, caveman-compress, caveman-help, caveman-review, caveman-stats |
 | `vercel/agent-skills` | 9 | deploy-to-vercel, vercel-cli-with-tokens, vercel-composition-patterns, vercel-optimize, vercel-react-best-practices, vercel-react-native-skills, vercel-react-view-transitions, web-design-guidelines, writing-guidelines |
@@ -124,6 +130,38 @@ o hook de edição no seu settings.
 | npm `claude-video-install` | 1 | claude-video |
 | PyPI `notebooklm-skill` | 1 | notebooklm-research |
 | `anthropics/claude-plugins-official` | 1 plugin | superpowers v6.1.1 |
+
+### matt pocock (10/08/2026)
+
+Origem: `mattpocock/skills` (MIT, © 2026 Matt Pocock). O repo tem **35** skills; só
+9 foram espelhadas. Também existe como plugin oficial
+(`claude plugins install mattpocock-skills`) — **não use os dois**, senão cada skill
+aparece duas vezes.
+
+Como as skills do Vercel, o `npx skills add -g` **não** escreve no
+`skills-lock.json`. Elas entram no espelho como `Source: local`.
+
+**Pegadinha das flags:** o agente chama-se `claude-code` (não `claude`), e o `-s`
+aceita **um** nome por flag — `-s a,b` não casa com nada e o CLI apenas lista as
+skills disponíveis, saindo com sucesso. Parece que instalou; não instalou.
+
+Pedi 4 skills; as outras 5 são dependências declaradas dentro dos `SKILL.md`:
+
+| Pedida | Puxa |
+|---|---|
+| `grill-with-docs` | `grilling` + `domain-modeling` |
+| `tdd` | `codebase-design` |
+| `code-review` | `setup-matt-pocock-skills` (para achar `docs/agents/issue-tracker.md`) |
+| `diagnosing-bugs` | — (só referencia `improve-codebase-architecture`, que ficou de fora) |
+
+`grill-me`, `grill-with-docs` e `setup-matt-pocock-skills` têm
+`disable-model-invocation: true` — são slash command puro, o modelo não as invoca
+sozinho.
+
+**Antes do primeiro uso em cada repo**, rode `/setup-matt-pocock-skills`: ele
+pergunta o issue tracker, as labels de triagem e onde salvar docs, e escreve
+`docs/agents/*`. Sem isso, `code-review` não acha o spec e degrada para só o eixo
+de Standards.
 
 ### claude-video (07/08/2026)
 
@@ -173,13 +211,13 @@ há SLA nenhum.
 
 ### Por que o espelho existe
 
-O `skills-lock.json` rastreia só **27** das 39 — as do Pika e do caveman. As 9 da
-Vercel, a `find-skills`, a `claude-video` e a `notebooklm-research` aparecem como
-`Source: local` no `npx skills list`, ou seja, **nada as reinstala
-automaticamente**. Numa máquina nova, o Caminho B sozinho traria 27 e deixaria 12
-para trás, em silêncio.
+O `skills-lock.json` rastreia só **27** das 48 — as do Pika e do caveman. As 9 da
+Vercel, as 9 do Matt Pocock, a `find-skills`, a `claude-video` e a
+`notebooklm-research` aparecem como `Source: local` no `npx skills list`, ou seja,
+**nada as reinstala automaticamente**. Numa máquina nova, o Caminho B sozinho
+traria 27 e deixaria 21 para trás, em silêncio.
 
-O espelho inclui todas as 39, e não só as 12 órfãs, para que o repo seja a
+O espelho inclui todas as 48, e não só as 21 órfãs, para que o repo seja a
 resposta única — em vez de uma lista de exceções que alguém precisa lembrar.
 
 Verificado em 29/07/2026 com `npx skills list` (CLI v1.5.20).
