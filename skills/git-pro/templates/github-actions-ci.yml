@@ -1,0 +1,65 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # ─── Setup runtime (descomente o da sua stack) ────────────────────
+      # - uses: oven-sh/setup-bun@v2
+      #   with:
+      #     bun-version: latest
+      #
+      # - uses: actions/setup-node@v6
+      #   with:
+      #     node-version: '22'
+      #     cache: 'npm'
+      #
+      # - uses: actions/setup-python@v6
+      #   with:
+      #     python-version: '3.12'
+      #     cache: 'pip'
+      #
+      # - uses: actions/setup-go@v6
+      #   with:
+      #     go-version: 'stable'
+      #     cache: true
+      #
+      # - uses: dtolnay/rust-toolchain@stable
+
+      # ─── Install ──────────────────────────────────────────────────────
+      # - run: bun install --frozen-lockfile
+      # - run: pip install -r requirements.txt
+      # - run: go mod download
+      # - run: cargo build --locked
+
+      # ─── Lint ─────────────────────────────────────────────────────────
+      # - run: make release-check
+      # - run: bun lint
+      # - run: ruff check .
+      # - run: go vet ./...
+      # - run: cargo clippy -- -D warnings
+
+      # ─── Tests ────────────────────────────────────────────────────────
+      # - run: bun test
+      # - run: pytest -x -q
+      # - run: go test ./...
+      # - run: cargo test

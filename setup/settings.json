@@ -39,7 +39,8 @@
     "fp-check@trailofbits": true,
     "testing-handbook-skills@trailofbits": true,
     "differential-review@trailofbits": true,
-    "impeccable@impeccable": true
+    "impeccable@impeccable": true,
+    "vercel@claude-plugins-official": true
   },
   "effortLevel": "high",
   "autoUpdatesChannel": "latest",

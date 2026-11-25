@@ -1,0 +1,74 @@
+# lefthook.yml — Git hooks (https://github.com/evilmartians/lefthook)
+#
+# Setup uma vez por clone: `lefthook install`
+# Bypass pontual: `git commit --no-verify` ou `git push --no-verify`
+#
+# Customize comandos conforme stack do projeto.
+
+# ─── Pre-commit (rápido, só staged files) ─────────────────────────────
+pre-commit:
+  parallel: true
+  commands:
+    # Lint (descomente o da sua stack)
+    # lint-js:
+    #   glob: "*.{ts,tsx,js,jsx}"
+    #   run: bunx --bun biome check {staged_files}
+    #
+    # lint-py:
+    #   glob: "*.py"
+    #   run: ruff check {staged_files}
+    #
+    # lint-go:
+    #   glob: "*.go"
+    #   run: go vet ./...
+    #
+    # lint-rust:
+    #   glob: "*.rs"
+    #   run: cargo clippy --no-deps
+
+    # Format check (não escreve, só valida)
+    # format-check:
+    #   glob: "*.{ts,tsx,js,jsx,md,json,yaml,yml}"
+    #   run: bunx --bun prettier --check {staged_files}
+
+    # Anti-credenciais (sempre ativo)
+    gitleaks:
+      run: gitleaks protect --staged --verbose --redact
+
+# ─── Commit-msg (valida formato Conventional Commits) ─────────────────
+commit-msg:
+  commands:
+    conventional:
+      # Requer @commitlint/cli + @commitlint/config-conventional disponíveis (via npx, busca on-the-fly)
+      run: npx --yes --package=@commitlint/cli --package=@commitlint/config-conventional -- commitlint --extends @commitlint/config-conventional --edit {1}
+
+# ─── Pre-push (pode ser mais lento, roda só ao push) ──────────────────
+pre-push:
+  parallel: true
+  commands:
+    # Anti-stale — bloqueia push se branch local atrás de origin
+    anti-stale:
+      run: |
+        BRANCH="${LEFTHOOK_LOCAL_BRANCH:-$(git rev-parse --abbrev-ref HEAD)}"
+        git fetch --quiet origin "$BRANCH" 2>/dev/null || exit 0
+        BEHIND=$(git rev-list --count "HEAD..origin/$BRANCH" 2>/dev/null || echo 0)
+        if [ "$BEHIND" -gt 0 ]; then
+          echo ""
+          echo "🚫 Sua branch '$BRANCH' está $BEHIND commit(s) atrás de origin/$BRANCH"
+          echo "   Rode: git pull --rebase"
+          echo "   Bypass (raro): git push --no-verify"
+          echo ""
+          exit 1
+        fi
+
+    # Secret scan completo (não só staged — todo working tree)
+    gitleaks-full:
+      run: gitleaks detect --no-banner --redact
+
+    # Testes (descomente o da sua stack)
+    # tests:
+    #   run: bun test
+    # tests-py:
+    #   run: pytest -x -q
+    # tests-go:
+    #   run: go test ./...

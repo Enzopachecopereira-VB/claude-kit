@@ -1,0 +1,43 @@
+title = "gitleaks config"
+
+[extend]
+useDefault = true
+
+# Allowlist por PATH é perigoso: uma exemption de caminho ignora o arquivo
+# INTEIRO, então um segredo real dentro de um README, CHANGELOG ou docs/
+# publicado passaria batido no `gitleaks detect` (falso-verde). Por isso as
+# exemptions abaixo são majoritariamente por VALOR (regex/stopword — o padrão
+# tem que parecer um placeholder, tipo `your-key-here`, `changeme`, `{{TOKEN}}`,
+# `{env:...}`, `op://...`), não por caminho de arquivo publicado. Path
+# allowlist só é aceitável para fixtures/mocks de teste (dados sintéticos que
+# nunca viram credencial real) e para o próprio arquivo de config do gitleaks
+# (evita autodetecção dos padrões de exemplo listados abaixo). Qualquer
+# exemption nova deve ser documentada aqui com o motivo.
+[allowlist]
+description = "Exemptions por valor (placeholder-shaped); paths só para fixtures/config"
+
+paths = [
+    '''tests?/(fixtures|mocks|data)/.*''',
+    '''__fixtures__/.*''',
+    '''\.gitleaks\.toml$''',
+    '''gitleaks\.toml$''',
+]
+
+regexes = [
+    '''EXAMPLE[_-]?KEY[_-]?(DO[_-]?NOT[_-]?USE)?''',
+    '''(sk|pk|api)[_-]?(test|sample|example|dummy|fake)[_-][a-zA-Z0-9]{8,}''',
+    '''(your|my)[_-]?(api[_-]?)?key[_-]?here''',
+    '''change[_-]?me''',
+    '''(REPLACE|TODO|XXX|YOUR)[_-]?[A-Z_]+''',
+    '''^[xX]{3,}$''',
+    '''\{\{[A-Z_]+\}\}''',
+    '''\{env:[^}]+\}''',
+    '''op://[^\s'"]+''',
+]
+
+commits = []
+
+stopwords = [
+    "example", "sample", "dummy", "fake", "test", "demo",
+    "placeholder", "your-", "my-", "todo", "fixme", "changeme", "xxx",
+]

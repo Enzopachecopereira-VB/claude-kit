@@ -1,0 +1,32 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary & profiling
+*.test
+*.out
+coverage.out
+coverage.html
+
+# Build
+bin/
+dist/
+vendor/
+
+# Go workspace
+go.work
+go.work.sum
+
+# Dependency directories
+# vendor/                        # comente se usar `go mod vendor`
+
+# IDE / Tooling
+.idea/
+*.iml
+
+# Air (hot reload)
+tmp/
+.air.toml.local

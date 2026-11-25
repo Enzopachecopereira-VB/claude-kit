@@ -1,0 +1,55 @@
+# Para repos cujo CONTEÚDO PRINCIPAL é agente (skills, agents, commands, docs MD/YAML).
+# Use junto com `base`.
+# Commitar: *.md, *.yaml, *.yml, *.json, skills/, agents/, commands/, references/, templates/, scripts/, docs/
+# NÃO commitar: sessions, caches, memory locais
+
+# Sessões e estado de agentes (pessoal por run)
+.claude/sessions/
+.claude/projects/
+.claude/.local/
+.opencode/sessions/
+.opencode/.sisyphus/
+.opencode/storage/
+.opencode/snapshot/
+.opencode/tool-output/
+.opencode/log/
+.sisyphus/
+.agent-memory-store/
+.playwright-mcp/
+.pi/sessions/
+.pi/.local/
+
+# Cache de runtimes / instaladores
+.cache/
+.cache/opencode/
+.cache/claude/
+.npm/
+node_modules/
+
+# Bytecode/cache Python (alguns agents têm scripts Python)
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Output gerado por scripts de agente
+.tmp/
+.temp/
+tmp/
+out/
+output/
+
+# Removed-backups dirs (convenção: backups locais quando deleta skill)
+.removed-backups/
+*.backup
+*.bak
+*.bak.*
+
+# Editor preferences pessoais
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+.idea/
+.fleet/

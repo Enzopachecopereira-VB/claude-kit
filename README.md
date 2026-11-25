@@ -4,7 +4,7 @@ Meu ambiente do Claude Code — agentes, comandos, skills e settings — version
 para não ficar preso a uma máquina.
 
 O repositório é ao mesmo tempo um **marketplace**, o **plugin** `vision-kit` e um
-**espelho das 48 skills** que uso.
+**espelho das 59 skills** que uso.
 
 ## Instalar numa máquina nova
 
@@ -24,7 +24,7 @@ gh auth login
 git clone https://github.com/Enzopachecopereira-VB/claude-kit.git
 cd claude-kit
 powershell -ExecutionPolicy Bypass -File .\install.ps1          # settings + statusline
-powershell -ExecutionPolicy Bypass -File .\install-skills.ps1   # as 48 skills
+powershell -ExecutionPolicy Bypass -File .\install-skills.ps1   # as 59 skills
 ```
 
 ### 3. Agentes e comandos — dentro do Claude Code
@@ -49,14 +49,15 @@ Os dois scripts fazem backup do que já existir antes de sobrescrever.
 plugins/vision-kit/
   agents/     13 agentes especialistas
   commands/    4 slash commands
-skills/       48 skills de terceiros (Pika, caveman, Vercel, Matt Pocock) — espelho
+skills/       59 skills (Pika, caveman, Vercel, Matt Pocock, git, segurança, frontend) — espelho
 setup/
   settings.json      modelo, tema, effort level
-  statusline.js      statusline customizada
+  statusline.js      statusline customizada (Node)
+  statusline.ps1     statusline alternativa em PowerShell (sem depender do Node)
   skills-lock.json   origem e hash das skills rastreadas pelo CLI
   skills-externas.md os dois caminhos para restaurar as skills
 install.ps1          aplica settings + statusline nesta máquina
-install-skills.ps1   restaura as 48 skills nesta máquina
+install-skills.ps1   restaura as 59 skills nesta máquina
 ```
 
 ### Agentes
@@ -90,9 +91,10 @@ Os agentes esperam encontrar `docs/regras/*.md` na raiz do projeto atual.
 
 ### Skills
 
-48 skills de terceiros espelhadas em `skills/` — 20 do Pika, 7 do caveman, 9 da
-Vercel, 9 do Matt Pocock, a `find-skills`, a `claude-video` e a
-`notebooklm-research`. Restaura com `./install-skills.ps1`.
+59 skills espelhadas em `skills/` — 20 do Pika, 7 do caveman, 9 da Vercel,
+9 do Matt Pocock, a `find-skills`, a `claude-video`, a `notebooklm-research` e
+mais 11 adicionadas em 25/11/2026 (engenharia, git, segurança, frontend e
+engenharia reversa — lista em `setup/skills-externas.md`). Restaura com `./install-skills.ps1`.
 
 O espelho existe porque o `skills-lock.json` só rastreia 27 delas: as 9 da Vercel,
 as 9 do Matt Pocock, a `find-skills`, a `claude-video` e a `notebooklm-research`
@@ -141,9 +143,25 @@ Nas consumidoras, dentro do Claude Code: `/plugin update vision-kit@enzo-claude-
 
 Depois dos 3 passos acima, **só sobra isto** para fazer à mão:
 
-- **MCP servers locais** (4: supabase, firecrawl, pika-mcp, playwright) — têm
-  credenciais, não dá para versionar. Reconfigure com `claude mcp add` ou `/mcp`.
-  Os da conta claude.ai (Figma, higgsfield) vêm sozinhos ao logar.
+- **MCP servers locais** — têm credenciais/login, não dá para versionar.
+  Reconfigure com `claude mcp add` (escopo `-s user`) ou `/mcp`:
+
+  | MCP | Comando |
+  |---|---|
+  | playwright | `claude mcp add playwright -s user -- npx @playwright/mcp@latest` |
+  | rea (engenharia reversa) | `claude mcp add rea -s user -- cmd.exe /d /c npx -y rea-agents@6.8.0 mcp` |
+  | runway | `claude mcp add runway -s user --transport http https://mcp.runwayml.com/mcp` (autentica no `/mcp`) |
+  | supabase | precisa do token da conta |
+  | firecrawl | precisa da API key |
+  | pika-mcp | precisa da API key |
+
+  O **vercel** vem pelo plugin `vercel@claude-plugins-official` (já no
+  `settings.json`); só falta autenticar no `/mcp`.
+
+  Os conectores da conta claude.ai (Notion, Figma, Claude Docs, Google Slides,
+  Google Drive, Box, Runway, SlidesGPT, higgsfield) vêm sozinhos ao logar —
+  **desde que `ANTHROPIC_API_KEY` não esteja definida**; senão o Claude Code usa a
+  chave, ignora os conectores e o `/mcp` mostra só os locais.
   Detalhes em `setup/skills-externas.md`.
 - **Memórias de projeto** (`~/.claude/projects/*/memory/`) — contexto interno de
   cada projeto, fica local de propósito.

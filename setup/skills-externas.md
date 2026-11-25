@@ -9,7 +9,7 @@ diferença é se você quer a versão congelada ou a mais recente.
 
 ## Caminho A — espelho deste repo (recomendado)
 
-As 48 skills estão versionadas em `skills/` na raiz do repo. Restaurar:
+As 59 skills estão versionadas em `skills/` na raiz do repo. Restaurar:
 
 ```powershell
 git clone https://github.com/Enzopachecopereira-VB/claude-kit.git
@@ -113,6 +113,34 @@ Isso escreve `~/.cursor/skills/impeccable`, `~/.agents/skills/impeccable` e hook
 Cuidado com o escopo: rodar `npx impeccable install` sem `--providers` a partir de
 `~` instala em escopo global e inclui o `.claude`, duplicando a skill e registrando
 o hook de edição no seu settings.
+
+---
+
+## Adicionadas em 25/11/2026
+
+11 skills que estavam na máquina atual e faltavam no espelho, mais a atualização
+de `diagnosing-bugs` e `tdd` para a versão instalada aqui (outubro/2026).
+
+| Skill | Origem | Reinstalar da fonte |
+|---|---|---|
+| design-taste-frontend | `leonxlnx/taste-skill` | `npx skills add leonxlnx/taste-skill` |
+| frontend-design | `anthropics/skills` | `npx skills add anthropics/skills -s frontend-design` |
+| reverse-engineer-anything | `rea-agents` (npm, par do MCP `rea`) | vem com o REA |
+| bi-frontends | comunidade | só pelo espelho |
+| building-nextjs-applications | comunidade | só pelo espelho |
+| improve-ui | — | só pelo espelho |
+| security-audit | — | só pelo espelho |
+| resolving-merge-conflicts | MIT | só pelo espelho |
+| git-contribution | proprietária | só pelo espelho |
+| git-pro | proprietária | só pelo espelho |
+| worktree-agent-workflow | proprietária | só pelo espelho |
+
+A `impeccable` também está instalada como skill na máquina atual (via
+`npx skills add pbakaus/impeccable`), mas **continua fora do espelho** pelo motivo
+da seção acima: o plugin já a entrega.
+
+O `skills-lock.json` não foi alterado — estas entram como `Source: local`, como
+as da Vercel e do Matt Pocock.
 
 ---
 

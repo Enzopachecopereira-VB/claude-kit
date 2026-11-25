@@ -1,0 +1,55 @@
+# Bundler
+.bundle/
+vendor/bundle/
+vendor/cache/
+/.bundle/
+*.gem
+*.rbc
+/lib/bundler/man/
+
+# RSpec / Tests
+.rspec
+.rspec_status
+/coverage/
+/spec/reports/
+/spec/examples.txt
+/test/tmp/
+/test/version_tmp/
+
+# Rails
+/log/*
+!/log/.keep
+/tmp/*
+!/tmp/.keep
+/public/system/
+/public/assets/
+/public/packs/
+/public/packs-test/
+/.byebug_history
+/storage/*
+!/storage/.keep
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+config/master.key
+config/credentials/*.key
+
+# Ruby versions / managers
+.ruby-version
+.rvmrc
+.rbenv-version
+
+# IDE
+.idea/
+*.iml
+
+# JRuby
+jruby/
+
+# CRuby C exts
+*.bundle
+*.so
+*.o
+*.a
+mkmf.log

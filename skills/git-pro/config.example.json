@@ -1,0 +1,11 @@
+{
+  "$comment": "Copie este arquivo para ~/.config/git-pro.json e ajuste. A skill git-pro lê dele.",
+  "docs_language": "pt-br",
+  "commit_language": "en-us",
+  "default_license": "MIT",
+  "default_author": "",
+  "default_org": "",
+  "release_automation": "local-harness",
+  "secret_scanner": "gitleaks",
+  "hooks_runner": "lefthook"
+}

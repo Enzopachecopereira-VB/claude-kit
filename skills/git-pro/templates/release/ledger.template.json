@@ -1,0 +1,12 @@
+{
+  "$schema": "https://example.com/schemas/release-ledger.schema.json",
+  "releases": [
+    {
+      "version": "{{VERSAO_INICIAL}}",
+      "tag": "v{{VERSAO_INICIAL}}",
+      "releaseName": "{{VERSAO_INICIAL}}",
+      "date": "{{DATA_INICIAL}}",
+      "evidence": "docs/release/{{VERSAO_INICIAL}}.md"
+    }
+  ]
+}
